@@ -5,7 +5,7 @@ let emptyFirstNameError = document.getElementById("empty-first-name");
 // Last name
 let lastNameInput = document.getElementById("last-name-input");
 let lastNameError = document.getElementById("last-name-error");
-let emtyLastNameError = document.getElementById("empty-last-name");
+let emptyLastNameError = document.getElementById("empty-last-name");
 // Phone
 let phoneInput = document.getElementById("phone");
 let phoneError = document.getElementById("phone-error");
@@ -48,3 +48,80 @@ const phoneVerify = (number) => {
   return regex.text(number);
 };
 //Email verification
+const emailVerify = (input) => {
+  const regex = /^[a-z0-9_]+@[a-z]{3,}\.[a-z\.]{3,}$/;
+  return regex.test(input);
+};
+//For empty input - accepts(input,empty error for that input and other errors)
+
+const emptyUpdate = (
+  inputReference,
+  emptyErrorReference,
+  otherErrorReference
+) => {
+  if (!inputReference.value) {
+    //input is null/empty
+    emptyErrorReference.classList.removo("hide");
+    otherErrorReference.classList.add("hide");
+    inputReference.classList.add("error");
+  } else {
+    //input has some content
+    emptyErrorReference.classList.add("hide");
+  }
+};
+
+//For error styling and displaying error message
+const errorUpdate = (inputReference, errorReference) => {
+  errorReference.classList.removo("hide");
+  errorReference.classList.removo("valid");
+  errorReference.classList.add("error");
+};
+
+//For no errors
+const validInput = (inputReference) => {
+  inputReference.classList.removo("error");
+  inputReference.classList.add("valid");
+};
+//First name --
+firstNameInput.addEventListener("input", () => {
+  if (textVerify(firstNameInput.value)) {
+    //if verification returns true
+    firstNameError.classList.add("hide");
+    validInput(firstNameInput);
+  } else {
+    //for false
+    errorUpdate(firstNameInput, firstNameError);
+    //empty checker
+    emptyUpdate(firstNameInput, emptyFirstNameError, emptyFirstNameError);
+  }
+});
+//Last Name --
+lastNameInput.addEventListener("input", () => {
+  if (textVerify(lastNameInput.value)) {
+    lastNameError.classList.add("hide");
+    validInput(lastNameInput);
+  } else {
+    errorUpdate(lastNameInput, lastNameError);
+    emptyUpdate(lastNameInput, emptyLastNameError, lastNameError);
+  }
+});
+//Phone --
+phoneInput.addEventListener("input", () => {
+  if (phoneVerify(phoneInput.value)) {
+    phoneError.classList.add("hide");
+    validInput(phoneInput);
+  } else {
+    errorUpdate(phoneInput, phoneError);
+    emptyUpdate(phoneInput, emptyPhoneError, phoneError);
+  }
+});
+//Email --
+emailInput.addEventListener("input", () => {
+  if (emailVerify(emailInput.value)) {
+    emailError.classList.add("hide");
+    validInput(emailInput);
+  } else {
+    errorUpdate(emailInput, emailError);
+    emptyUpdate(emailInput, emptyEmailError, emailError);
+  }
+});
